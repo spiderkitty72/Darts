@@ -1,0 +1,41 @@
+<!doctype html>
+<html><body style="margin:0;background:#000">
+<canvas id="c"></canvas>
+<script type="module">
+import { renderBackdrop } from '../js/wood.js';
+import { drawSprite, setSpriteScale } from '../js/sprites.js';
+import { drawDart } from '../js/game.js';
+// Draw an app icon at `size` px. maskable=true keeps art inside the safe zone.
+window.drawIcon = (size, maskable) => {
+  const c = document.getElementById('c');
+  c.width = c.height = size;
+  const ctx = c.getContext('2d');
+  const s = size / 256;
+  setSpriteScale(s * (maskable ? 1.1 : 1.4));
+  const bd = renderBackdrop('mahogany', 7, s * 2).canvas;
+  ctx.drawImage(bd, 380 * s * 2, 140 * s * 2, 256 * s * 2, 256 * s * 2, 0, 0, size, size);
+  ctx.fillStyle = 'rgba(0,0,0,0.25)';
+  ctx.fillRect(0, 0, size, size);
+  ctx.save();
+  ctx.scale(s, s);
+  const k = maskable ? 0.78 : 1;
+  ctx.translate(128, 128); ctx.scale(k, k); ctx.translate(-128, -128);
+  // multiplier-style target
+  const rings = [[96, '#2a1a12'], [90, '#ffa31a'], [74, '#f4ecd8'], [58, '#1d1d1d'], [42, '#f4ecd8'], [26, '#ffa31a'], [12, '#e8303a']];
+  for (const [r, col] of rings) { ctx.beginPath(); ctx.arc(128, 136, r, 0, Math.PI * 2); ctx.fillStyle = col; ctx.fill(); }
+  ctx.save(); ctx.translate(110, 120); ctx.scale(1.4, 1.4); ctx.translate(-110, -120);
+  drawSprite(ctx, 'lollipop', 110, 120, -0.35, 1);
+  ctx.restore();
+  drawDart(ctx, 118, 124, 0.85, 0.75, 2.6, '#3fa7ff');
+  ctx.restore();
+  if (!maskable) {
+    // rounded-corner friendly vignette
+    const g = ctx.createRadialGradient(size / 2, size / 2, size * 0.3, size / 2, size / 2, size * 0.75);
+    g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,0.45)');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, size, size);
+  }
+  return c.toDataURL('image/png');
+};
+window.ready = true;
+</script>
+</body></html>

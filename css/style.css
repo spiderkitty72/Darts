@@ -1,0 +1,34 @@
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #1b0f08 radial-gradient(ellipse at center, #3a2214 0%, #140a05 100%);
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+canvas {
+  position: absolute;
+  display: block;
+  touch-action: none;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+}
+#rotate {
+  display: none;
+  position: fixed;
+  top: max(12px, env(safe-area-inset-top));
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 14px;
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fbe9cf;
+  font: 600 14px "Trebuchet MS", system-ui, sans-serif;
+  white-space: nowrap;
+  pointer-events: none;
+}
+@media (orientation: portrait) and (pointer: coarse) {
+  #rotate { display: block; }
+}
